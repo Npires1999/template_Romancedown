@@ -28,6 +28,7 @@
       font-size: 14px; font-weight: 700; color: #e86830;
       letter-spacing: 2px; text-transform: uppercase;
       border-bottom: 1px solid #1a1a1a; padding-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center;
     }
     .editor-subtitle {
       font-size: 11px; font-weight: 700; color: #a0a0a0;
@@ -72,10 +73,22 @@
     }
     .btn-secondary {
       background: #1a1a1a; color: #ccc; border: 1px solid #333;
-      padding: 12px; border-radius: 6px; font-weight: 700;
-      font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+      padding: 10px; border-radius: 6px; font-weight: 700;
+      font-size: 10px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
     }
     .btn-secondary:hover { background: #252525; color: #fff; }
+
+    /* Modal de Importação */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); display: none; justify-content: center;
+      align-items: center; z-index: 9999;
+    }
+    .modal-content {
+      background: #0d0d0d; border: 1px solid #222; border-radius: 8px;
+      padding: 20px; width: 500px; max-width: 90%; display: flex;
+      flex-direction: column; gap: 15px;
+    }
 
     /* Painel da Direita (Preview) */
     .preview-panel {
@@ -87,9 +100,25 @@
 </head>
 <body>
 
+  <!-- MODAL PARA IMPORTAR HTML -->
+  <div class="modal-overlay" id="importModal">
+    <div class="modal-content">
+      <div style="font-size: 12px; font-weight: 700; color: #e86830; text-transform: uppercase;">Importar Código HTML</div>
+      <div style="font-size: 11px; color: #888;">Cole abaixo o código HTML gerado anteriormente para carregar os dados no editor:</div>
+      <textarea id="importCodeInput" style="height: 180px;" placeholder="Cole o código <div style=...> aqui..."></textarea>
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn-secondary" onclick="closeImportModal()">Cancelar</button>
+        <button class="btn-action" style="padding: 8px 15px;" onclick="processImportHTML()">Carregar Dados</button>
+      </div>
+    </div>
+  </div>
+
   <!-- PAINEL DA ESQUERDA (EDITOR) -->
   <div class="editor-panel">
-    <div class="editor-title">Terminal Marinha / Dossiê</div>
+    <div class="editor-title">
+      <span>Terminal Marinha / Dossiê</span>
+      <button class="btn-secondary" style="padding: 4px 8px; font-size: 9px;" onclick="openImportModal()">📥 Importar</button>
+    </div>
 
     <div class="form-group">
       <label>Nome do Personagem</label>
@@ -358,6 +387,50 @@
     var talentosCount = 0;
     var arsenalCount = 0;
     var tecnicasCount = 0;
+
+    function openImportModal() {
+      document.getElementById('importModal').style.display = 'flex';
+    }
+
+    function closeImportModal() {
+      document.getElementById('importModal').style.display = 'none';
+      document.getElementById('importCodeInput').value = '';
+    }
+
+    // Processa o HTML colar e extrai os valores para o formulário
+    function processImportHTML() {
+      var code = document.getElementById('importCodeInput').value;
+      if (!code.trim()) return;
+
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(code, 'text/html');
+
+      // Tenta ler Banner
+      var bannerDiv = doc.querySelector('div[style*="background-image"]');
+      if (bannerDiv) {
+        var match = bannerDiv.style.backgroundImage.match(/url\(['"]?(.*?)['"]?\)/);
+        if (match && match[1]) document.getElementById('in-banner').value = match[1];
+      }
+
+      // Tenta ler Subtítulo e Nome
+      var nameDiv = doc.querySelector('div[style*="Cinzel"]');
+      if (nameDiv) document.getElementById('in-name').value = nameDiv.innerText.trim();
+
+      var subDiv = doc.querySelector('div[style*="letter-spacing: 2px"]');
+      if (subDiv) document.getElementById('in-sub').value = subDiv.innerText.trim();
+
+      // Tenta ler HP
+      var hpSpan = doc.querySelectorAll('span');
+      hpSpan.forEach(function(s) {
+        if (s.innerText.includes('/')) {
+          document.getElementById('in-hp').value = s.innerText.trim();
+        }
+      });
+
+      closeImportModal();
+      update();
+      alert('Importação concluída! Os campos encontrados foram preenchidos.');
+    }
 
     function addPericiaEditor(nomeVal, descVal) {
       periciasCount++;
@@ -655,7 +728,6 @@
           });
         }
 
-        // Reconstrói listas dinâmicas se existirem dados na nuvem
         if(data.pericias && Array.isArray(data.pericias)) {
           document.getElementById('pericias-editor-list').innerHTML = '';
           periciasCount = 0;
