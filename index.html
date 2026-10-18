@@ -5,221 +5,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terminal Marinha / Dossiê Pirata - Gerador RPG</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+  
+  <!-- SDK do Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
-      width: 100%;
-      height: 100%;
-      background-color: #050505;
-      color: #e0e0e0;
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      overflow: hidden;
+      width: 100%; height: 100%;
+      background-color: #050505; color: #e0e0e0;
+      font-family: 'Inter', sans-serif; display: flex; overflow: hidden;
     }
-
-    /* Painel da Esquerda (Editor) */
     .editor-panel {
-      width: 420px;
-      min-width: 420px;
-      background-color: #000000;
-      border-right: 1px solid #1f1f1f;
-      padding: 20px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      height: 100vh;
+      width: 420px; min-width: 420px; background-color: #000000;
+      border-right: 1px solid #1f1f1f; padding: 20px; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 15px; height: 100vh;
     }
-
     .editor-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #e86830;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      border-bottom: 1px solid #1a1a1a;
-      padding-bottom: 8px;
+      font-size: 14px; font-weight: 700; color: #e86830;
+      letter-spacing: 2px; text-transform: uppercase;
+      border-bottom: 1px solid #1a1a1a; padding-bottom: 8px;
     }
-
     .editor-subtitle {
-      font-size: 11px;
-      font-weight: 700;
-      color: #a0a0a0;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-top: 5px;
-      border-bottom: 1px dashed #222;
-      padding-bottom: 4px;
+      font-size: 11px; font-weight: 700; color: #a0a0a0;
+      letter-spacing: 1px; text-transform: uppercase; margin-top: 5px;
+      border-bottom: 1px dashed #222; padding-bottom: 4px;
     }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
     .form-group label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #888;
-      font-weight: 600;
+      font-size: 10px; text-transform: uppercase;
+      letter-spacing: 1px; color: #888; font-weight: 600;
     }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .attr-box {
-      background: #070707;
-      border: 1px solid #1a1a1a;
-      border-radius: 6px;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+      background: #070707; border: 1px solid #1a1a1a;
+      border-radius: 6px; padding: 8px; display: flex;
+      flex-direction: column; gap: 6px;
     }
-
-    .attr-title {
-      font-size: 10px;
-      font-weight: 700;
-      color: #e86830;
-      text-transform: uppercase;
-    }
-
+    .attr-title { font-size: 10px; font-weight: 700; color: #e86830; text-transform: uppercase; }
     .haki-editor-card, .dynamic-editor-card {
-      background: #070707;
-      border: 1px solid #1a1a1a;
-      border-radius: 6px;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      position: relative;
+      background: #070707; border: 1px solid #1a1a1a;
+      border-radius: 6px; padding: 10px; display: flex;
+      flex-direction: column; gap: 8px; position: relative;
     }
-
     .btn-remove-item {
-      position: absolute;
-      top: 8px; right: 8px;
-      background: transparent;
-      border: none;
-      color: #ff3e00;
-      font-weight: bold;
-      font-size: 12px;
-      cursor: pointer;
+      position: absolute; top: 8px; right: 8px;
+      background: transparent; border: none; color: #ff3e00;
+      font-weight: bold; font-size: 12px; cursor: pointer;
     }
-
     input, textarea {
-      background-color: #0a0a0a;
-      border: 1px solid #222;
-      border-radius: 6px;
-      color: #fff;
-      padding: 8px 10px;
-      font-size: 12px;
-      font-family: inherit;
-      outline: none;
-      width: 100%;
+      background-color: #0a0a0a; border: 1px solid #222;
+      border-radius: 6px; color: #fff; padding: 8px 10px;
+      font-size: 12px; font-family: inherit; outline: none; width: 100%;
     }
-
-    input:focus, textarea:focus {
-      border-color: #e86830;
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .btn-group {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
+    input:focus, textarea:focus { border-color: #e86830; }
+    textarea { resize: vertical; min-height: 80px; }
+    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
     .btn-action {
       background: linear-gradient(90deg, #e86830, #ff3e00);
-      color: #fff;
-      border: none;
-      padding: 12px;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
+      color: #fff; border: none; padding: 12px; border-radius: 6px;
+      font-weight: 700; font-size: 11px; letter-spacing: 1px;
+      text-transform: uppercase; cursor: pointer;
     }
-
     .btn-secondary {
-      background: #1a1a1a;
-      color: #ccc;
-      border: 1px solid #333;
-      padding: 12px;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
+      background: #1a1a1a; color: #ccc; border: 1px solid #333;
+      padding: 12px; border-radius: 6px; font-weight: 700;
+      font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
     }
-
-    .btn-secondary:hover {
-      background: #252525;
-      color: #fff;
-    }
-
-    .modal-import {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.85);
-      z-index: 999;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      background: #0d0d0d;
-      border: 1px solid #222;
-      border-radius: 8px;
-      padding: 20px;
-      width: 90%;
-      max-width: 500px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
     .preview-panel {
-      flex: 1;
-      background-color: #050505;
-      padding: 40px;
-      overflow-y: auto;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      height: 100vh;
+      flex: 1; background-color: #050505; padding: 40px;
+      overflow-y: auto; display: flex; justify-content: center;
+      align-items: flex-start; height: 100vh;
     }
   </style>
 </head>
 <body>
-
-  <!-- MODAL DE IMPORTAÇÃO -->
-  <div class="modal-import" id="modal-import">
-    <div class="modal-content">
-      <div class="editor-title">Importar Código HTML</div>
-      <div class="form-group">
-        <label>Cole o código HTML do seu post aqui:</label>
-        <textarea id="import-code" placeholder="&lt;div style='...'&gt;...&lt;/div&gt;" style="min-height:160px;"></textarea>
-      </div>
-      <div class="btn-group">
-        <button class="btn-secondary" onclick="closeImport()">Cancelar</button>
-        <button class="btn-action" onclick="processImport()">Importar Dados</button>
-      </div>
-    </div>
-  </div>
 
   <!-- PAINEL DA ESQUERDA (EDITOR) -->
   <div class="editor-panel">
@@ -460,17 +321,32 @@
     <button class="btn-secondary" onclick="addTrilhaEditor()" style="margin-top: 5px;">+ Adicionar Trilha</button>
 
     <div class="btn-group">
-      <button class="btn-secondary" onclick="openImport()">Importar HTML</button>
       <button class="btn-action" onclick="copyHTML()">Copiar Código do Fórum</button>
     </div>
   </div>
 
-  <!-- AREA DE PREVISUALIZAÇÃO (DIREITA) -->
+  <!-- PREVISUALIZAÇÃO -->
   <div class="preview-panel">
     <div id="lunar-preview-target" style="width: 100%; display: flex; justify-content: center;"></div>
   </div>
 
   <script>
+    // --- CHAVES DO FIREBASE CONFIGURADAS ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyD0NtmjQopui9mf32dsq59QtmQYNjWkKig",
+      authDomain: "templates-online.firebaseapp.com",
+      databaseURL: "https://templates-online-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "templates-online",
+      storageBucket: "templates-online.firebasestorage.app",
+      messagingSenderId: "453002939032",
+      appId: "1:453002939032:web:ad3329652007fa89105eed"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let isRemoteUpdate = false;
+
     var trilhasCount = 0;
     var periciasCount = 0;
     var oficiosCount = 0;
@@ -600,27 +476,87 @@
       }
     }
 
-    var textInput = document.getElementById('in-text');
-    if (textInput) {
-      textInput.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B')) {
-          e.preventDefault();
-          var start = this.selectionStart;
-          var end = this.selectionEnd;
-          var val = this.value;
-          var selected = val.substring(start, end);
-          var replacement = '<b>' + selected + '</b>';
-          this.value = val.substring(0, start) + replacement + val.substring(end);
-          if (selected.length > 0) {
-            this.selectionStart = start;
-            this.selectionEnd = start + replacement.length;
-          } else {
-            this.selectionStart = this.selectionEnd = start + 3;
-          }
-          update();
+    function saveToCloud() {
+      if (isRemoteUpdate) return;
+      var data = {
+        name: document.getElementById('in-name').value,
+        sub: document.getElementById('in-sub').value,
+        banner: document.getElementById('in-banner').value,
+        hp: document.getElementById('in-hp').value,
+        saude: document.getElementById('in-saude').value,
+        desloc: document.getElementById('in-desloc').value,
+        natacao: document.getElementById('in-natacao').value,
+        tag: document.getElementById('in-tag').value,
+        text: document.getElementById('in-text').value,
+        obj: document.getElementById('in-obj').value,
+        turno: document.getElementById('in-turno').value,
+        resumo: document.getElementById('in-resumo-eventos').value,
+        
+        hakiSubArm: document.getElementById('in-haki-sub-armamento').value,
+        hakiDiceArm: document.getElementById('in-haki-dice-armamento').value,
+        hakiStatusArm: document.getElementById('in-haki-status-armamento').value,
+        hakiSubObs: document.getElementById('in-haki-sub-observacao').value,
+        hakiDiceObs: document.getElementById('in-haki-dice-observacao').value,
+        hakiStatusObs: document.getElementById('in-haki-status-observacao').value,
+        hakiSubConq: document.getElementById('in-haki-sub-conquistador').value,
+        hakiDiceConq: document.getElementById('in-haki-dice-conquistador').value,
+        hakiStatusConq: document.getElementById('in-haki-status-conquistador').value,
+
+        attrs: {}
+      };
+
+      var attrsKeys = ['forca', 'destreza', 'agilidade', 'constituicao', 'estamina', 'reflexos', 'sagacidade', 'instintos', 'presenca', 'poder', 'ambicao', 'destino'];
+      attrsKeys.forEach(function(k) {
+        if(document.getElementById('in-attr-' + k)) {
+          data.attrs[k] = {
+            val: document.getElementById('in-attr-' + k).value,
+            dice: document.getElementById('in-dice-' + k).value
+          };
         }
       });
+
+      db.ref('meu_dossie').set(data);
     }
+
+    db.ref('meu_dossie').on('value', function(snapshot) {
+      var data = snapshot.val();
+      if (data) {
+        isRemoteUpdate = true;
+        if(data.name) document.getElementById('in-name').value = data.name;
+        if(data.sub) document.getElementById('in-sub').value = data.sub;
+        if(data.banner) document.getElementById('in-banner').value = data.banner;
+        if(data.hp) document.getElementById('in-hp').value = data.hp;
+        if(data.saude) document.getElementById('in-saude').value = data.saude;
+        if(data.desloc) document.getElementById('in-desloc').value = data.desloc;
+        if(data.natacao) document.getElementById('in-natacao').value = data.natacao;
+        if(data.tag) document.getElementById('in-tag').value = data.tag;
+        if(data.text) document.getElementById('in-text').value = data.text;
+        if(data.obj) document.getElementById('in-obj').value = data.obj;
+        if(data.turno) document.getElementById('in-turno').value = data.turno;
+        if(data.resumo) document.getElementById('in-resumo-eventos').value = data.resumo;
+
+        if(data.hakiSubArm) document.getElementById('in-haki-sub-armamento').value = data.hakiSubArm;
+        if(data.hakiDiceArm) document.getElementById('in-haki-dice-armamento').value = data.hakiDiceArm;
+        if(data.hakiStatusArm) document.getElementById('in-haki-status-armamento').value = data.hakiStatusArm;
+
+        if(data.hakiSubObs) document.getElementById('in-haki-sub-observacao').value = data.hakiSubObs;
+        if(data.hakiDiceObs) document.getElementById('in-haki-dice-observacao').value = data.hakiDiceObs;
+        if(data.hakiStatusObs) document.getElementById('in-haki-status-observacao').value = data.hakiStatusObs;
+
+        if(data.hakiSubConq) document.getElementById('in-haki-sub-conquistador').value = data.hakiSubConq;
+        if(data.hakiDiceConq) document.getElementById('in-haki-dice-conquistador').value = data.hakiDiceConq;
+        if(data.hakiStatusConq) document.getElementById('in-haki-status-conquistador').value = data.hakiStatusConq;
+
+        if(data.attrs) {
+          Object.keys(data.attrs).forEach(function(k) {
+            if(document.getElementById('in-attr-' + k)) document.getElementById('in-attr-' + k).value = data.attrs[k].val;
+            if(document.getElementById('in-dice-' + k)) document.getElementById('in-dice-' + k).value = data.attrs[k].dice;
+          });
+        }
+        generateInlineHTML();
+        isRemoteUpdate = false;
+      }
+    });
 
     function generateInlineHTML() {
       var name = document.getElementById('in-name').value;
@@ -649,7 +585,6 @@
       var formattedTxt = txt.replace(/\n/g, '</p><p style="margin: 0 0 10px 0;">');
       formattedTxt = formattedTxt.replace(/<b>/g, '<b style="color: #e86830; font-weight: 700;">').replace(/<strong>/g, '<strong style="color: #e86830; font-weight: 700;">');
 
-      // Atributos
       var attrs = ['forca', 'destreza', 'agilidade', 'constituicao', 'estamina', 'reflexos', 'sagacidade', 'instintos', 'presenca', 'poder', 'ambicao', 'destino'];
       var attrNames = ['Força', 'Destreza', 'Agilidade', 'Constituição', 'Estamina', 'Reflexos', 'Sagacidade', 'Instintos', 'Presença', 'Poder', 'Ambição', 'Destino'];
       var attrsHTML = '';
@@ -666,7 +601,6 @@
           '</div>';
       });
 
-      // Hakis
       var hakis = ['armamento', 'observacao', 'conquistador'];
       var hakiTitles = ['ARMAMENTO', 'OBSERVAÇÃO', 'CONQUISTADOR'];
       var hakisHTML = '';
@@ -686,11 +620,9 @@
           '</div>';
       });
 
-      // Resumo
       var resTxt = document.getElementById('in-resumo-eventos').value;
       var resumoHTML = '<div style="font-size: 12px; color: #ccc;">— ' + resTxt.replace(/\n/g, '<br>— ') + '</div>';
 
-      // Perícias
       var periciasHTML = '';
       document.querySelectorAll('.pericia-editor-card').forEach(function(card) {
         var id = card.id.replace('pericia-card-', '');
@@ -699,7 +631,6 @@
         periciasHTML += '<div style="font-size: 12px; color: #ccc;"><span style="color: #e86830; font-weight: 700;">' + pNome + '</span> ' + pDesc + '</div>';
       });
 
-      // Ofícios
       var oficiosHTML = '';
       document.querySelectorAll('.oficio-editor-card').forEach(function(card) {
         var id = card.id.replace('oficio-card-', '');
@@ -708,7 +639,6 @@
         oficiosHTML += '<div style="font-size: 12px; color: #ccc;"><span style="color: #e86830; font-weight: 700;">' + oNome + '</span> ' + oDesc + '</div>';
       });
 
-      // Estilos
       var estilosHTML = '';
       document.querySelectorAll('.estilo-editor-card').forEach(function(card) {
         var id = card.id.replace('estilo-card-', '');
@@ -717,7 +647,6 @@
         estilosHTML += '<div style="font-size: 12px; color: #ccc;"><span style="color: #e86830; font-weight: 700;">' + eNome + '</span> ' + eDesc + '</div>';
       });
 
-      // Talentos
       var talentosHTML = '';
       document.querySelectorAll('.talento-editor-card').forEach(function(card) {
         var id = card.id.replace('talento-card-', '');
@@ -738,7 +667,6 @@
           '</div>';
       });
 
-      // Arsenal
       var arsenalHTML = '';
       document.querySelectorAll('.arsenal-editor-card').forEach(function(card) {
         var id = card.id.replace('arsenal-card-', '');
@@ -747,7 +675,6 @@
         arsenalHTML += '<div style="font-size: 12px; color: #ccc;">— <span style="color: #e86830; font-weight: 700;">' + aNome + '</span>: ' + aEfeito + '</div>';
       });
 
-      // Técnicas
       var tecnicasHTML = '';
       document.querySelectorAll('.tecnica-editor-card').forEach(function(card) {
         var id = card.id.replace('tecnica-card-', '');
@@ -756,7 +683,6 @@
         tecnicasHTML += '<div style="font-size: 12px; color: #ccc;">— <span style="color: #e86830; font-weight: 700;">' + tecNome + '</span>: ' + tecDesc + '</div>';
       });
 
-      // Trilhas
       var trilhasHTML = '';
       document.querySelectorAll('.trilha-editor-card').forEach(function(card) {
         var id = card.id.replace('trilha-card-', '');
@@ -778,7 +704,6 @@
           '</div>';
       });
 
-      // Montagem Final Inline (Largura aumentada para max-width: 780px e fonte para 12px)
       var fullHTML = 
         '<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">' +
         '<div style="width: 100%; max-width: 780px; background-color: #000000; color: #e0e0e0; border-radius: 12px; overflow: hidden; border: 1px solid #1a1a1a; font-family: \'Inter\', sans-serif; margin: 0 auto;">' +
@@ -867,8 +792,8 @@
     }
 
     function update() {
-      var html = generateInlineHTML();
-      document.getElementById('lunar-preview-target').innerHTML = html;
+      generateInlineHTML();
+      saveToCloud();
     }
 
     function copyHTML() {
@@ -876,28 +801,6 @@
       navigator.clipboard.writeText(html);
       alert('Código copiado com sucesso! Agora basta colar no fórum.');
     }
-
-    function openImport() {
-      document.getElementById('modal-import').style.display = 'flex';
-    }
-
-    function closeImport() {
-      document.getElementById('modal-import').style.display = 'none';
-      document.getElementById('import-code').value = '';
-    }
-
-    function processImport() {
-      var code = document.getElementById('import-code').value;
-      if (!code.trim()) return;
-
-      var parser = new DOMParser();
-      var doc = parser.parseFromString(code, 'text/html');
-
-      update();
-      closeImport();
-    }
-
-    update();
   </script>
 </body>
 </html>
