@@ -17,6 +17,8 @@
       background-color: #050505; color: #e0e0e0;
       font-family: 'Inter', sans-serif; display: flex; overflow: hidden;
     }
+
+    /* Painel da Esquerda (Editor) */
     .editor-panel {
       width: 420px; min-width: 420px; background-color: #000000;
       border-right: 1px solid #1f1f1f; padding: 20px; overflow-y: auto;
@@ -52,6 +54,8 @@
       font-weight: 700; font-size: 11px; letter-spacing: 1px;
       text-transform: uppercase; cursor: pointer;
     }
+
+    /* Painel da Direita (Preview) */
     .preview-panel {
       flex: 1; background-color: #050505; padding: 40px;
       overflow-y: auto; display: flex; justify-content: center;
@@ -126,7 +130,7 @@
     <div class="editor-subtitle">Dados Analíticos</div>
     <div class="form-group">
       <label>Resumo dos Eventos</label>
-      <textarea id="in-resumo-eventos" oninput="update()">Resumo...</textarea>
+      <textarea id="in-resumo-eventos" oninput="update()">Resumo dos acontecimentos...</textarea>
     </div>
 
     <div class="btn-group">
@@ -140,7 +144,7 @@
   </div>
 
   <script>
-    // Configuração do Firebase
+    // Configuração com suas chaves do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyD0NtmjQopui9mf32dsq59QtmQYNjWkKig",
       authDomain: "templates-online.firebaseapp.com",
@@ -156,7 +160,7 @@
 
     let isRemoteUpdate = false;
 
-    // Atalho Ctrl + B para negrito
+    // Atalho Ctrl + B para Negrito
     var textInput = document.getElementById('in-text');
     if (textInput) {
       textInput.addEventListener('keydown', function(e) {
@@ -179,7 +183,7 @@
       });
     }
 
-    // Salva na nuvem no Firebase
+    // Salva na nuvem (Firebase)
     function saveToCloud() {
       if (isRemoteUpdate) return;
       var data = {
@@ -200,29 +204,30 @@
       db.ref('meu_dossie').set(data);
     }
 
-    // Escuta alterações no Firebase
+    // Escuta atualizações da nuvem em tempo real
     db.ref('meu_dossie').on('value', function(snapshot) {
       var data = snapshot.val();
       if (data) {
         isRemoteUpdate = true;
-        if(data.name) document.getElementById('in-name').value = data.name;
-        if(data.sub) document.getElementById('in-sub').value = data.sub;
-        if(data.banner) document.getElementById('in-banner').value = data.banner;
-        if(data.hp) document.getElementById('in-hp').value = data.hp;
-        if(data.saude) document.getElementById('in-saude').value = data.saude;
-        if(data.desloc) document.getElementById('in-desloc').value = data.desloc;
-        if(data.natacao) document.getElementById('in-natacao').value = data.natacao;
-        if(data.tag) document.getElementById('in-tag').value = data.tag;
-        if(data.text) document.getElementById('in-text').value = data.text;
-        if(data.obj) document.getElementById('in-obj').value = data.obj;
-        if(data.turno) document.getElementById('in-turno').value = data.turno;
-        if(data.resumo) document.getElementById('in-resumo-eventos').value = data.resumo;
+        if(data.name !== undefined) document.getElementById('in-name').value = data.name;
+        if(data.sub !== undefined) document.getElementById('in-sub').value = data.sub;
+        if(data.banner !== undefined) document.getElementById('in-banner').value = data.banner;
+        if(data.hp !== undefined) document.getElementById('in-hp').value = data.hp;
+        if(data.saude !== undefined) document.getElementById('in-saude').value = data.saude;
+        if(data.desloc !== undefined) document.getElementById('in-desloc').value = data.desloc;
+        if(data.natacao !== undefined) document.getElementById('in-natacao').value = data.natacao;
+        if(data.tag !== undefined) document.getElementById('in-tag').value = data.tag;
+        if(data.text !== undefined) document.getElementById('in-text').value = data.text;
+        if(data.obj !== undefined) document.getElementById('in-obj').value = data.obj;
+        if(data.turno !== undefined) document.getElementById('in-turno').value = data.turno;
+        if(data.resumo !== undefined) document.getElementById('in-resumo-eventos').value = data.resumo;
+        
         generateInlineHTML();
         isRemoteUpdate = false;
       }
     });
 
-    // Gera o HTML do Preview e do Fórum
+    // Gera o HTML do Preview na área da direita
     function generateInlineHTML() {
       var name = document.getElementById('in-name').value;
       var sub = document.getElementById('in-sub').value;
@@ -319,7 +324,7 @@
       alert('Código copiado com sucesso! Agora basta colar no fórum.');
     }
 
-    // Inicialização
+    // Inicialização da página
     generateInlineHTML();
   </script>
 </body>
