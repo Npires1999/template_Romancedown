@@ -40,6 +40,22 @@
       letter-spacing: 1px; color: #888; font-weight: 600;
     }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .attr-box {
+      background: #070707; border: 1px solid #1a1a1a;
+      border-radius: 6px; padding: 8px; display: flex;
+      flex-direction: column; gap: 6px;
+    }
+    .attr-title { font-size: 10px; font-weight: 700; color: #e86830; text-transform: uppercase; }
+    .haki-editor-card, .dynamic-editor-card {
+      background: #070707; border: 1px solid #1a1a1a;
+      border-radius: 6px; padding: 10px; display: flex;
+      flex-direction: column; gap: 8px; position: relative;
+    }
+    .btn-remove-item {
+      position: absolute; top: 8px; right: 8px;
+      background: transparent; border: none; color: #ff3e00;
+      font-weight: bold; font-size: 12px; cursor: pointer;
+    }
     input, textarea {
       background-color: #0a0a0a; border: 1px solid #222;
       border-radius: 6px; color: #fff; padding: 8px 10px;
@@ -54,6 +70,12 @@
       font-weight: 700; font-size: 11px; letter-spacing: 1px;
       text-transform: uppercase; cursor: pointer;
     }
+    .btn-secondary {
+      background: #1a1a1a; color: #ccc; border: 1px solid #333;
+      padding: 12px; border-radius: 6px; font-weight: 700;
+      font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+    }
+    .btn-secondary:hover { background: #252525; color: #fff; }
 
     /* Painel da Direita (Preview) */
     .preview-panel {
@@ -127,11 +149,181 @@
       </div>
     </div>
 
+    <!-- EDICAO DOS ATRIBUTOS & DADOS -->
+    <div class="editor-subtitle">Atributos & Status RPG</div>
+
+    <div class="form-row">
+      <div class="attr-box">
+        <div class="attr-title">Força</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nível/Valor</label><input type="text" id="in-attr-forca" value="01" oninput="update()"></div>
+          <div class="form-group"><label>Dado</label><input type="text" id="in-dice-forca" value="d4" oninput="update()"></div>
+        </div>
+      </div>
+      <div class="attr-box">
+        <div class="attr-title">Destreza</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nível/Valor</label><input type="text" id="in-attr-destreza" value="02" oninput="update()"></div>
+          <div class="form-group"><label>Dado</label><input type="text" id="in-dice-destreza" value="d4" oninput="update()"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="attr-box">
+        <div class="attr-title">Agilidade</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nível/Valor</label><input type="text" id="in-attr-agilidade" value="02" oninput="update()"></div>
+          <div class="form-group"><label>Dado</label><input type="text" id="in-dice-agilidade" value="d4" oninput="update()"></div>
+        </div>
+      </div>
+      <div class="attr-box">
+        <div class="attr-title">Constituição</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nível/Valor</label><input type="text" id="in-attr-constituicao" value="01" oninput="update()"></div>
+          <div class="form-group"><label>Dado</label><input type="text" id="in-dice-constituicao" value="d4" oninput="update()"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="attr-box">
+        <div class="attr-title">Estamina</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nível/Valor</label><input type="text" id="in-attr-estamina" value="02" oninput="update()"></div>
+          <div class="form-group"><label>Dado</label><input type="text" id="in-dice-estamina" value="d4" oninput="update()"></div>
+        </div>
+      </div>
+      <div class="attr-box">
+        <div class="attr-title">Reflexos</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nível/Valor</label><input type="text" id="in-attr-reflexos" value="02" oninput="update()"></div>
+          <div class="form-group"><label>Dado</label><input type="text" id="in-dice-reflexos" value="d4" oninput="update()"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="attr-box">
+        <div class="attr-title">Sagacidade</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nível/Valor</label><input type="text" id="in-attr-sagacidade" value="02" oninput="update()"></div>
+          <div class="form-group"><label>Dado</label><input type="text" id="in-dice-sagacidade" value="d4" oninput="update()"></div>
+        </div>
+      </div>
+      <div class="attr-box">
+        <div class="attr-title">Instintos</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nível/Valor</label><input type="text" id="in-attr-instintos" value="01" oninput="update()"></div>
+          <div class="form-group"><label>Dado</label><input type="text" id="in-dice-instintos" value="d4" oninput="update()"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="attr-box">
+        <div class="attr-title">Presença</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nível/Valor</label><input type="text" id="in-attr-presenca" value="01" oninput="update()"></div>
+          <div class="form-group"><label>Dado</label><input type="text" id="in-dice-presenca" value="d4" oninput="update()"></div>
+        </div>
+      </div>
+      <div class="attr-box">
+        <div class="attr-title">Poder</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nível/Valor</label><input type="text" id="in-attr-poder" value="01" oninput="update()"></div>
+          <div class="form-group"><label>Dado</label><input type="text" id="in-dice-poder" value="d4" oninput="update()"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="attr-box">
+        <div class="attr-title">Ambição</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nível/Valor</label><input type="text" id="in-attr-ambicao" value="02" oninput="update()"></div>
+          <div class="form-group"><label>Dado</label><input type="text" id="in-dice-ambicao" value="d4" oninput="update()"></div>
+        </div>
+      </div>
+      <div class="attr-box">
+        <div class="attr-title">Destino</div>
+        <div class="form-row">
+          <div class="form-group"><label>Nível/Valor</label><input type="text" id="in-attr-destino" value="01" oninput="update()"></div>
+          <div class="form-group"><label>Dado</label><input type="text" id="in-dice-destino" value="d4" oninput="update()"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDICAO DOS HAKIS -->
+    <div class="editor-subtitle">Hakis</div>
+
+    <div class="haki-editor-card">
+      <div class="attr-title">Armamento</div>
+      <div class="form-row">
+        <div class="form-group"><label>Subtítulo</label><input type="text" id="in-haki-sub-armamento" value="Busoshoku" oninput="update()"></div>
+        <div class="form-group"><label>Dado de Haki</label><input type="text" id="in-haki-dice-armamento" value="d12" oninput="update()"></div>
+      </div>
+      <div class="form-group"><label>Status</label><input type="text" id="in-haki-status-armamento" value="dormente." oninput="update()"></div>
+    </div>
+
+    <div class="haki-editor-card">
+      <div class="attr-title">Observação</div>
+      <div class="form-row">
+        <div class="form-group"><label>Subtítulo</label><input type="text" id="in-haki-sub-observacao" value="Kenbunshoku" oninput="update()"></div>
+        <div class="form-group"><label>Dado de Haki</label><input type="text" id="in-haki-dice-observacao" value="d8" oninput="update()"></div>
+      </div>
+      <div class="form-group"><label>Status</label><input type="text" id="in-haki-status-observacao" value="dormente." oninput="update()"></div>
+    </div>
+
+    <div class="haki-editor-card">
+      <div class="attr-title">Conquistador</div>
+      <div class="form-row">
+        <div class="form-group"><label>Subtítulo</label><input type="text" id="in-haki-sub-conquistador" value="Haoshoku" oninput="update()"></div>
+        <div class="form-group"><label>Dado de Haki</label><input type="text" id="in-haki-dice-conquistador" value="d4" oninput="update()"></div>
+      </div>
+      <div class="form-group"><label>Status</label><input type="text" id="in-haki-status-conquistador" value="dormente." oninput="update()"></div>
+    </div>
+
+    <!-- DADOS ANALÍTICOS & RESUMO -->
     <div class="editor-subtitle">Dados Analíticos</div>
     <div class="form-group">
       <label>Resumo dos Eventos</label>
       <textarea id="in-resumo-eventos" oninput="update()">Resumo dos acontecimentos...</textarea>
     </div>
+
+    <!-- PERÍCIAS -->
+    <div class="editor-subtitle">Perícias</div>
+    <div id="pericias-editor-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    <button class="btn-secondary" onclick="addPericiaEditor()" style="margin-top: 5px;">+ Adicionar Perícia</button>
+
+    <!-- OFÍCIOS & ESTILOS DE COMBATE -->
+    <div class="editor-subtitle">Ofícios</div>
+    <div id="oficios-editor-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    <button class="btn-secondary" onclick="addOficioEditor()" style="margin-top: 5px;">+ Adicionar Ofício</button>
+
+    <div class="editor-subtitle">Estilos de Combate</div>
+    <div id="estilos-editor-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    <button class="btn-secondary" onclick="addEstiloEditor()" style="margin-top: 5px;">+ Adicionar Estilo</button>
+
+    <!-- TALENTOS E MAESTRIAS -->
+    <div class="editor-subtitle">Talentos e Maestrias</div>
+    <div id="talentos-editor-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    <button class="btn-secondary" onclick="addTalentoEditor()" style="margin-top: 5px;">+ Adicionar Talento</button>
+
+    <!-- ARSENAL E ITENS -->
+    <div class="editor-subtitle">Arsenal e Itens</div>
+    <div id="arsenal-editor-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    <button class="btn-secondary" onclick="addArsenalEditor()" style="margin-top: 5px;">+ Adicionar Item</button>
+
+    <!-- TÉCNICAS FLOW -->
+    <div class="editor-subtitle">Técnicas Flow</div>
+    <div id="tecnicas-editor-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    <button class="btn-secondary" onclick="addTecnicaEditor()" style="margin-top: 5px;">+ Adicionar Técnica</button>
+
+    <!-- EDICAO DAS TRILHAS -->
+    <div class="editor-subtitle">Trilhas de Poder</div>
+    <div id="trilhas-editor-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    <button class="btn-secondary" onclick="addTrilhaEditor()" style="margin-top: 5px;">+ Adicionar Trilha</button>
 
     <div class="btn-group">
       <button class="btn-action" onclick="copyHTML()">Copiar Código do Fórum</button>
@@ -144,7 +336,6 @@
   </div>
 
   <script>
-    // Configuração com suas chaves do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyD0NtmjQopui9mf32dsq59QtmQYNjWkKig",
       authDomain: "templates-online.firebaseapp.com",
@@ -160,7 +351,135 @@
 
     let isRemoteUpdate = false;
 
-    // Atalho Ctrl + B para Negrito
+    var trilhasCount = 0;
+    var periciasCount = 0;
+    var oficiosCount = 0;
+    var estilosCount = 0;
+    var talentosCount = 0;
+    var arsenalCount = 0;
+    var tecnicasCount = 0;
+
+    function addPericiaEditor(nomeVal, descVal) {
+      periciasCount++;
+      var id = periciasCount;
+      var container = document.getElementById('pericias-editor-list');
+      var div = document.createElement('div');
+      div.className = 'dynamic-editor-card pericia-editor-card';
+      div.id = 'pericia-card-' + id;
+      div.innerHTML = 
+        '<button class="btn-remove-item" onclick="removeItem(\'pericia-card-' + id + '\')">✕</button>' +
+        '<div class="form-group"><label>Nome da Perícia</label><input type="text" id="in-pericia-nome-' + id + '" value="' + (nomeVal || '') + '" oninput="update()"></div>' +
+        '<div class="form-group"><label>Descrição</label><textarea id="in-pericia-desc-' + id + '" oninput="update()">' + (descVal || '') + '</textarea></div>';
+      container.appendChild(div);
+      update();
+    }
+
+    function addOficioEditor(nomeVal, descVal) {
+      oficiosCount++;
+      var id = oficiosCount;
+      var container = document.getElementById('oficios-editor-list');
+      var div = document.createElement('div');
+      div.className = 'dynamic-editor-card oficio-editor-card';
+      div.id = 'oficio-card-' + id;
+      div.innerHTML = 
+        '<button class="btn-remove-item" onclick="removeItem(\'oficio-card-' + id + '\')">✕</button>' +
+        '<div class="form-group"><label>Ofício</label><input type="text" id="in-oficio-nome-' + id + '" value="' + (nomeVal || '') + '" oninput="update()"></div>' +
+        '<div class="form-group"><label>Detalhes</label><textarea id="in-oficio-desc-' + id + '" oninput="update()">' + (descVal || '') + '</textarea></div>';
+      container.appendChild(div);
+      update();
+    }
+
+    function addEstiloEditor(nomeVal, descVal) {
+      estilosCount++;
+      var id = estilosCount;
+      var container = document.getElementById('estilos-editor-list');
+      var div = document.createElement('div');
+      div.className = 'dynamic-editor-card estilo-editor-card';
+      div.id = 'estilo-card-' + id;
+      div.innerHTML = 
+        '<button class="btn-remove-item" onclick="removeItem(\'estilo-card-' + id + '\')">✕</button>' +
+        '<div class="form-group"><label>Estilo</label><input type="text" id="in-estilo-nome-' + id + '" value="' + (nomeVal || '') + '" oninput="update()"></div>' +
+        '<div class="form-group"><label>Descrição</label><textarea id="in-estilo-desc-' + id + '" oninput="update()">' + (descVal || '') + '</textarea></div>';
+      container.appendChild(div);
+      update();
+    }
+
+    function addTalentoEditor(titleVal, nivelVal, catVal, descVal, detVal) {
+      talentosCount++;
+      var id = talentosCount;
+      var container = document.getElementById('talentos-editor-list');
+      var div = document.createElement('div');
+      div.className = 'dynamic-editor-card talento-editor-card';
+      div.id = 'talento-card-' + id;
+      div.innerHTML = 
+        '<button class="btn-remove-item" onclick="removeItem(\'talento-card-' + id + '\')">✕</button>' +
+        '<div class="form-group"><label>Título</label><input type="text" id="in-talento-title-' + id + '" value="' + (titleVal || '') + '" oninput="update()"></div>' +
+        '<div class="form-row">' +
+          '<div class="form-group"><label>Nível</label><input type="text" id="in-talento-nivel-' + id + '" value="' + (nivelVal || '1') + '" oninput="update()"></div>' +
+          '<div class="form-group"><label>Categoria</label><input type="text" id="in-talento-cat-' + id + '" value="' + (catVal || 'Especial') + '" oninput="update()"></div>' +
+        '</div>' +
+        '<div class="form-group"><label>Descrição</label><textarea id="in-talento-desc-' + id + '" oninput="update()">' + (descVal || '') + '</textarea></div>' +
+        '<div class="form-group"><label>Níveis Detalhados</label><textarea id="in-talento-det-' + id + '" oninput="update()">' + (detVal || '') + '</textarea></div>';
+      container.appendChild(div);
+      update();
+    }
+
+    function addArsenalEditor(nomeVal, efeitoVal) {
+      arsenalCount++;
+      var id = arsenalCount;
+      var container = document.getElementById('arsenal-editor-list');
+      var div = document.createElement('div');
+      div.className = 'dynamic-editor-card arsenal-editor-card';
+      div.id = 'arsenal-card-' + id;
+      div.innerHTML = 
+        '<button class="btn-remove-item" onclick="removeItem(\'arsenal-card-' + id + '\')">✕</button>' +
+        '<div class="form-group"><label>Item</label><input type="text" id="in-arsenal-nome-' + id + '" value="' + (nomeVal || '') + '" oninput="update()"></div>' +
+        '<div class="form-group"><label>Efeito</label><textarea id="in-arsenal-efeito-' + id + '" oninput="update()">' + (efeitoVal || '') + '</textarea></div>';
+      container.appendChild(div);
+      update();
+    }
+
+    function addTecnicaEditor(nomeVal, descVal) {
+      tecnicasCount++;
+      var id = tecnicasCount;
+      var container = document.getElementById('tecnicas-editor-list');
+      var div = document.createElement('div');
+      div.className = 'dynamic-editor-card tecnica-editor-card';
+      div.id = 'tecnica-card-' + id;
+      div.innerHTML = 
+        '<button class="btn-remove-item" onclick="removeItem(\'tecnica-card-' + id + '\')">✕</button>' +
+        '<div class="form-group"><label>Técnica</label><input type="text" id="in-tecnica-nome-' + id + '" value="' + (nomeVal || '') + '" oninput="update()"></div>' +
+        '<div class="form-group"><label>Descrição</label><textarea id="in-tecnica-desc-' + id + '" oninput="update()">' + (descVal || '') + '</textarea></div>';
+      container.appendChild(div);
+      update();
+    }
+
+    function addTrilhaEditor(titleVal, statusVal, descVal) {
+      trilhasCount++;
+      var id = trilhasCount;
+      var container = document.getElementById('trilhas-editor-list');
+      var div = document.createElement('div');
+      div.className = 'dynamic-editor-card trilha-editor-card';
+      div.id = 'trilha-card-' + id;
+      div.innerHTML = 
+        '<button class="btn-remove-item" onclick="removeItem(\'trilha-card-' + id + '\')">✕</button>' +
+        '<div class="form-row">' +
+          '<div class="form-group"><label>Título</label><input type="text" id="in-trilha-title-' + id + '" value="' + (titleVal || 'INICIAL') + '" oninput="update()"></div>' +
+          '<div class="form-group"><label>Status / Categoria</label><input type="text" id="in-trilha-status-' + id + '" value="' + (statusVal || '...') + '" oninput="update()"></div>' +
+        '</div>' +
+        '<div class="form-group"><label>Texto de Escolhas e Mecânicas</label><textarea id="in-trilha-desc-' + id + '" oninput="update()">' + (descVal || '...') + '</textarea></div>';
+      container.appendChild(div);
+      update();
+    }
+
+    function removeItem(id) {
+      var el = document.getElementById(id);
+      if (el) {
+        el.remove();
+        update();
+      }
+    }
+
     var textInput = document.getElementById('in-text');
     if (textInput) {
       textInput.addEventListener('keydown', function(e) {
@@ -183,9 +502,76 @@
       });
     }
 
-    // Salva na nuvem (Firebase)
     function saveToCloud() {
       if (isRemoteUpdate) return;
+      
+      var periciasData = [];
+      document.querySelectorAll('.pericia-editor-card').forEach(function(card) {
+        var id = card.id.replace('pericia-card-', '');
+        periciasData.push({
+          nome: document.getElementById('in-pericia-nome-' + id).value,
+          desc: document.getElementById('in-pericia-desc-' + id).value
+        });
+      });
+
+      var oficiosData = [];
+      document.querySelectorAll('.oficio-editor-card').forEach(function(card) {
+        var id = card.id.replace('oficio-card-', '');
+        oficiosData.push({
+          nome: document.getElementById('in-oficio-nome-' + id).value,
+          desc: document.getElementById('in-oficio-desc-' + id).value
+        });
+      });
+
+      var estilosData = [];
+      document.querySelectorAll('.estilo-editor-card').forEach(function(card) {
+        var id = card.id.replace('estilo-card-', '');
+        estilosData.push({
+          nome: document.getElementById('in-estilo-nome-' + id).value,
+          desc: document.getElementById('in-estilo-desc-' + id).value
+        });
+      });
+
+      var talentosData = [];
+      document.querySelectorAll('.talento-editor-card').forEach(function(card) {
+        var id = card.id.replace('talento-card-', '');
+        talentosData.push({
+          title: document.getElementById('in-talento-title-' + id).value,
+          nivel: document.getElementById('in-talento-nivel-' + id).value,
+          cat: document.getElementById('in-talento-cat-' + id).value,
+          desc: document.getElementById('in-talento-desc-' + id).value,
+          det: document.getElementById('in-talento-det-' + id).value
+        });
+      });
+
+      var arsenalData = [];
+      document.querySelectorAll('.arsenal-editor-card').forEach(function(card) {
+        var id = card.id.replace('arsenal-card-', '');
+        arsenalData.push({
+          nome: document.getElementById('in-arsenal-nome-' + id).value,
+          efeito: document.getElementById('in-arsenal-efeito-' + id).value
+        });
+      });
+
+      var tecnicasData = [];
+      document.querySelectorAll('.tecnica-editor-card').forEach(function(card) {
+        var id = card.id.replace('tecnica-card-', '');
+        tecnicasData.push({
+          nome: document.getElementById('in-tecnica-nome-' + id).value,
+          desc: document.getElementById('in-tecnica-desc-' + id).value
+        });
+      });
+
+      var trilhasData = [];
+      document.querySelectorAll('.trilha-editor-card').forEach(function(card) {
+        var id = card.id.replace('trilha-card-', '');
+        trilhasData.push({
+          title: document.getElementById('in-trilha-title-' + id).value,
+          status: document.getElementById('in-trilha-status-' + id).value,
+          desc: document.getElementById('in-trilha-desc-' + id).value
+        });
+      });
+
       var data = {
         name: document.getElementById('in-name').value,
         sub: document.getElementById('in-sub').value,
@@ -198,13 +584,41 @@
         text: document.getElementById('in-text').value,
         obj: document.getElementById('in-obj').value,
         turno: document.getElementById('in-turno').value,
-        resumo: document.getElementById('in-resumo-eventos').value
+        resumo: document.getElementById('in-resumo-eventos').value,
+        
+        hakiSubArm: document.getElementById('in-haki-sub-armamento').value,
+        hakiDiceArm: document.getElementById('in-haki-dice-armamento').value,
+        hakiStatusArm: document.getElementById('in-haki-status-armamento').value,
+        hakiSubObs: document.getElementById('in-haki-sub-observacao').value,
+        hakiDiceObs: document.getElementById('in-haki-dice-observacao').value,
+        hakiStatusObs: document.getElementById('in-haki-status-observacao').value,
+        hakiSubConq: document.getElementById('in-haki-sub-conquistador').value,
+        hakiDiceConq: document.getElementById('in-haki-dice-conquistador').value,
+        hakiStatusConq: document.getElementById('in-haki-status-conquistador').value,
+
+        attrs: {},
+        pericias: periciasData,
+        oficios: oficiosData,
+        estilos: estilosData,
+        talentos: talentosData,
+        arsenal: arsenalData,
+        tecnicas: tecnicasData,
+        trilhas: trilhasData
       };
+
+      var attrsKeys = ['forca', 'destreza', 'agilidade', 'constituicao', 'estamina', 'reflexos', 'sagacidade', 'instintos', 'presenca', 'poder', 'ambicao', 'destino'];
+      attrsKeys.forEach(function(k) {
+        if(document.getElementById('in-attr-' + k)) {
+          data.attrs[k] = {
+            val: document.getElementById('in-attr-' + k).value,
+            dice: document.getElementById('in-dice-' + k).value
+          };
+        }
+      });
 
       db.ref('meu_dossie').set(data);
     }
 
-    // Escuta atualizações da nuvem em tempo real
     db.ref('meu_dossie').on('value', function(snapshot) {
       var data = snapshot.val();
       if (data) {
@@ -221,13 +635,68 @@
         if(data.obj !== undefined) document.getElementById('in-obj').value = data.obj;
         if(data.turno !== undefined) document.getElementById('in-turno').value = data.turno;
         if(data.resumo !== undefined) document.getElementById('in-resumo-eventos').value = data.resumo;
-        
+
+        if(data.hakiSubArm !== undefined) document.getElementById('in-haki-sub-armamento').value = data.hakiSubArm;
+        if(data.hakiDiceArm !== undefined) document.getElementById('in-haki-dice-armamento').value = data.hakiDiceArm;
+        if(data.hakiStatusArm !== undefined) document.getElementById('in-haki-status-armamento').value = data.hakiStatusArm;
+
+        if(data.hakiSubObs !== undefined) document.getElementById('in-haki-sub-observacao').value = data.hakiSubObs;
+        if(data.hakiDiceObs !== undefined) document.getElementById('in-haki-dice-observacao').value = data.hakiDiceObs;
+        if(data.hakiStatusObs !== undefined) document.getElementById('in-haki-status-observacao').value = data.hakiStatusObs;
+
+        if(data.hakiSubConq !== undefined) document.getElementById('in-haki-sub-conquistador').value = data.hakiSubConq;
+        if(data.hakiDiceConq !== undefined) document.getElementById('in-haki-dice-conquistador').value = data.hakiDiceConq;
+        if(data.hakiStatusConq !== undefined) document.getElementById('in-haki-status-conquistador').value = data.hakiStatusConq;
+
+        if(data.attrs) {
+          Object.keys(data.attrs).forEach(function(k) {
+            if(document.getElementById('in-attr-' + k)) document.getElementById('in-attr-' + k).value = data.attrs[k].val;
+            if(document.getElementById('in-dice-' + k)) document.getElementById('in-dice-' + k).value = data.attrs[k].dice;
+          });
+        }
+
+        // Reconstrói listas dinâmicas se existirem dados na nuvem
+        if(data.pericias && Array.isArray(data.pericias)) {
+          document.getElementById('pericias-editor-list').innerHTML = '';
+          periciasCount = 0;
+          data.pericias.forEach(function(item) { addPericiaEditor(item.nome, item.desc); });
+        }
+        if(data.oficios && Array.isArray(data.oficios)) {
+          document.getElementById('oficios-editor-list').innerHTML = '';
+          oficiosCount = 0;
+          data.oficios.forEach(function(item) { addOficioEditor(item.nome, item.desc); });
+        }
+        if(data.estilos && Array.isArray(data.estilos)) {
+          document.getElementById('estilos-editor-list').innerHTML = '';
+          estilosCount = 0;
+          data.estilos.forEach(function(item) { addEstiloEditor(item.nome, item.desc); });
+        }
+        if(data.talentos && Array.isArray(data.talentos)) {
+          document.getElementById('talentos-editor-list').innerHTML = '';
+          talentosCount = 0;
+          data.talentos.forEach(function(item) { addTalentoEditor(item.title, item.nivel, item.cat, item.desc, item.det); });
+        }
+        if(data.arsenal && Array.isArray(data.arsenal)) {
+          document.getElementById('arsenal-editor-list').innerHTML = '';
+          arsenalCount = 0;
+          data.arsenal.forEach(function(item) { addArsenalEditor(item.nome, item.efeito); });
+        }
+        if(data.tecnicas && Array.isArray(data.tecnicas)) {
+          document.getElementById('tecnicas-editor-list').innerHTML = '';
+          tecnicasCount = 0;
+          data.tecnicas.forEach(function(item) { addTecnicaEditor(item.nome, item.desc); });
+        }
+        if(data.trilhas && Array.isArray(data.trilhas)) {
+          document.getElementById('trilhas-editor-list').innerHTML = '';
+          trilhasCount = 0;
+          data.trilhas.forEach(function(item) { addTrilhaEditor(item.title, item.status, item.desc); });
+        }
+
         generateInlineHTML();
         isRemoteUpdate = false;
       }
     });
 
-    // Gera o HTML do Preview na área da direita
     function generateInlineHTML() {
       var name = document.getElementById('in-name').value;
       var sub = document.getElementById('in-sub').value;
@@ -240,7 +709,6 @@
       var txt = document.getElementById('in-text').value;
       var obj = document.getElementById('in-obj').value;
       var turno = document.getElementById('in-turno').value;
-      var resumo = document.getElementById('in-resumo-eventos').value;
 
       var pct = 100;
       if(hpVal.indexOf('/') !== -1) {
@@ -255,6 +723,125 @@
 
       var formattedTxt = txt.replace(/\n/g, '</p><p style="margin: 0 0 10px 0;">');
       formattedTxt = formattedTxt.replace(/<b>/g, '<b style="color: #e86830; font-weight: 700;">').replace(/<strong>/g, '<strong style="color: #e86830; font-weight: 700;">');
+
+      var attrs = ['forca', 'destreza', 'agilidade', 'constituicao', 'estamina', 'reflexos', 'sagacidade', 'instintos', 'presenca', 'poder', 'ambicao', 'destino'];
+      var attrNames = ['Força', 'Destreza', 'Agilidade', 'Constituição', 'Estamina', 'Reflexos', 'Sagacidade', 'Instintos', 'Presença', 'Poder', 'Ambição', 'Destino'];
+      var attrsHTML = '';
+
+      attrs.forEach(function(attr, i) {
+        var val = document.getElementById('in-attr-' + attr).value;
+        var dVal = document.getElementById('in-dice-' + attr).value.trim();
+        dVal = dVal.startsWith('▲') ? dVal : '▲ ' + dVal;
+
+        attrsHTML += 
+          '<div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 6px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;">' +
+            '<div><div style="font-size: 10px; text-transform: uppercase; color: #a0a0a0;">' + attrNames[i] + '</div><div style="font-size: 13px; font-weight: 700; color: #fff;">' + val + '</div></div>' +
+            '<span style="font-size: 10px; color: #e86830; background: rgba(232, 104, 48, 0.1); padding: 2px 6px; border-radius: 4px;">' + dVal + '</span>' +
+          '</div>';
+      });
+
+      var hakis = ['armamento', 'observacao', 'conquistador'];
+      var hakiTitles = ['ARMAMENTO', 'OBSERVAÇÃO', 'CONQUISTADOR'];
+      var hakisHTML = '';
+
+      hakis.forEach(function(haki, i) {
+        var hSub = document.getElementById('in-haki-sub-' + haki).value;
+        var hDice = document.getElementById('in-haki-dice-' + haki).value;
+        var hStatus = document.getElementById('in-haki-status-' + haki).value;
+
+        hakisHTML += 
+          '<div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px;">' +
+            '<div style="font-size: 11px; font-weight: 700; color: #fff; text-transform: uppercase;">' + hakiTitles[i] + '</div>' +
+            '<div style="font-size: 10px; color: #888; border-bottom: 1px solid #1a1a1a; padding-bottom: 6px;">' + hSub + '</div>' +
+            '<div style="font-size: 8px; text-transform: uppercase; color: #888; letter-spacing: 0.5px; margin-top: 2px;">DADO DE HAKI</div>' +
+            '<div style="font-size: 14px; font-weight: 700; color: #fff; border-bottom: 1px solid #1a1a1a; padding-bottom: 6px;">' + hDice + '</div>' +
+            '<div style="font-size: 11px; color: #a0a0a0; margin-top: 2px;">' + hStatus + '</div>' +
+          '</div>';
+      });
+
+      var resTxt = document.getElementById('in-resumo-eventos').value;
+      var resumoHTML = '<div style="font-size: 12px; color: #ccc;">— ' + resTxt.replace(/\n/g, '<br>— ') + '</div>';
+
+      var periciasHTML = '';
+      document.querySelectorAll('.pericia-editor-card').forEach(function(card) {
+        var id = card.id.replace('pericia-card-', '');
+        var pNome = document.getElementById('in-pericia-nome-' + id).value;
+        var pDesc = document.getElementById('in-pericia-desc-' + id).value;
+        periciasHTML += '<div style="font-size: 12px; color: #ccc;"><span style="color: #e86830; font-weight: 700;">' + pNome + '</span> ' + pDesc + '</div>';
+      });
+
+      var oficiosHTML = '';
+      document.querySelectorAll('.oficio-editor-card').forEach(function(card) {
+        var id = card.id.replace('oficio-card-', '');
+        var oNome = document.getElementById('in-oficio-nome-' + id).value;
+        var oDesc = document.getElementById('in-oficio-desc-' + id).value;
+        oficiosHTML += '<div style="font-size: 12px; color: #ccc;"><span style="color: #e86830; font-weight: 700;">' + oNome + '</span> ' + oDesc + '</div>';
+      });
+
+      var estilosHTML = '';
+      document.querySelectorAll('.estilo-editor-card').forEach(function(card) {
+        var id = card.id.replace('estilo-card-', '');
+        var eNome = document.getElementById('in-estilo-nome-' + id).value;
+        var eDesc = document.getElementById('in-estilo-desc-' + id).value;
+        estilosHTML += '<div style="font-size: 12px; color: #ccc;"><span style="color: #e86830; font-weight: 700;">' + eNome + '</span> ' + eDesc + '</div>';
+      });
+
+      var talentosHTML = '';
+      document.querySelectorAll('.talento-editor-card').forEach(function(card) {
+        var id = card.id.replace('talento-card-', '');
+        var tTitle = document.getElementById('in-talento-title-' + id).value;
+        var tNivel = document.getElementById('in-talento-nivel-' + id).value;
+        var tCat = document.getElementById('in-talento-cat-' + id).value;
+        var tDesc = document.getElementById('in-talento-desc-' + id).value;
+        var tDet = document.getElementById('in-talento-det-' + id).value;
+
+        talentosHTML += 
+          '<div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 12px 15px; display: flex; flex-direction: column; gap: 8px;">' +
+            '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+              '<div style="font-size: 11px; text-transform: uppercase; color: #888; font-weight: 700; letter-spacing: 1px;">' + tTitle + '</div>' +
+              '<div style="background: rgba(232, 104, 48, 0.15); color: #e86830; border: 1px solid rgba(232, 104, 48, 0.3); font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 600;">NÍVEL: ' + tNivel + '</div>' +
+            '</div>' +
+            '<div style="height: 1px; background: #1a1a1a;"></div>' +
+            '<div style="font-size: 12px; color: #ccc; line-height: 1.5;"><strong style="color: #e86830;">' + tCat + '</strong><br>' + tDesc.replace(/\n/g, '<br>') + (tDet ? '<br><br><i>' + tDet.replace(/\n/g, '<br>') + '</i>' : '') + '</div>' +
+          '</div>';
+      });
+
+      var arsenalHTML = '';
+      document.querySelectorAll('.arsenal-editor-card').forEach(function(card) {
+        var id = card.id.replace('arsenal-card-', '');
+        var aNome = document.getElementById('in-arsenal-nome-' + id).value;
+        var aEfeito = document.getElementById('in-arsenal-efeito-' + id).value;
+        arsenalHTML += '<div style="font-size: 12px; color: #ccc;">— <span style="color: #e86830; font-weight: 700;">' + aNome + '</span>: ' + aEfeito + '</div>';
+      });
+
+      var tecnicasHTML = '';
+      document.querySelectorAll('.tecnica-editor-card').forEach(function(card) {
+        var id = card.id.replace('tecnica-card-', '');
+        var tecNome = document.getElementById('in-tecnica-nome-' + id).value;
+        var tecDesc = document.getElementById('in-tecnica-desc-' + id).value;
+        tecnicasHTML += '<div style="font-size: 12px; color: #ccc;">— <span style="color: #e86830; font-weight: 700;">' + tecNome + '</span>: ' + tecDesc + '</div>';
+      });
+
+      var trilhasHTML = '';
+      document.querySelectorAll('.trilha-editor-card').forEach(function(card) {
+        var id = card.id.replace('trilha-card-', '');
+        var trTitle = document.getElementById('in-trilha-title-' + id).value;
+        var trStatus = document.getElementById('in-trilha-status-' + id).value;
+        var trDesc = document.getElementById('in-trilha-desc-' + id).value;
+
+        trilhasHTML += 
+          '<div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 12px 15px; display: flex; flex-direction: column; gap: 8px;">' +
+            '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+              '<div style="font-size: 11px; text-transform: uppercase; color: #888; font-weight: 700; letter-spacing: 1px;">' + trTitle + '</div>' +
+              '<div style="background: rgba(232, 104, 48, 0.15); color: #e86830; border: 1px solid rgba(232, 104, 48, 0.3); font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 600;">' + trStatus + '</div>' +
+            '</div>' +
+            '<div style="height: 1px; background: #1a1a1a;"></div>' +
+            '<div>' +
+              '<div style="font-size: 10px; text-transform: uppercase; color: #888; font-weight: 700; letter-spacing: 1px; margin-bottom: 2px;">ESCOLHAS E MECÂNICAS</div>' +
+              '<div style="font-size: 12px; color: #ccc; line-height: 1.5;">' + trDesc.replace(/\n/g, '<br>') + '</div>' +
+            '</div>' +
+          '</div>';
+      });
 
       var fullHTML = 
         '<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">' +
@@ -298,8 +885,39 @@
                   '<div style="background: #0a0a0a; border: 1px solid #1f1f1f; border-radius: 8px; padding: 10px; text-align: center;"><span style="font-size: 8px; text-transform: uppercase; color: #888; display: block; margin-bottom: 4px;">Turno</span><span style="font-size: 14px; font-weight: 700; color: #fff;">' + turno + '</span></div>' +
                 '</div>' +
 
+                '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">' + attrsHTML + '</div>' +
+
+                '<div style="font-size: 11px; font-weight: 700; color: #e86830; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px dashed #222; padding-bottom: 6px; margin: 15px 0 12px 0;">Hakis</div>' +
+                '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">' + hakisHTML + '</div>' +
+
                 '<div style="font-size: 11px; font-weight: 700; color: #e86830; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px dashed #222; padding-bottom: 6px; margin: 15px 0 12px 0;">Resumo dos Acontecimentos</div>' +
-                '<div style="font-size: 12px; color: #ccc;">— ' + resumo.replace(/\n/g, '<br>— ') + '</div>' +
+                '<div style="display: flex; flex-direction: column; gap: 6px;">' + resumoHTML + '</div>' +
+
+                '<div style="font-size: 11px; font-weight: 700; color: #e86830; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px dashed #222; padding-bottom: 6px; margin: 15px 0 12px 0;">Perícias</div>' +
+                '<div style="display: flex; flex-direction: column; gap: 6px;">' + periciasHTML + '</div>' +
+
+                '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">' +
+                  '<div>' +
+                    '<div style="font-size: 11px; font-weight: 700; color: #e86830; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px dashed #222; padding-bottom: 6px; margin: 15px 0 12px 0;">Ofícios</div>' +
+                    '<div style="display: flex; flex-direction: column; gap: 6px;">' + oficiosHTML + '</div>' +
+                  '</div>' +
+                  '<div>' +
+                    '<div style="font-size: 11px; font-weight: 700; color: #e86830; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px dashed #222; padding-bottom: 6px; margin: 15px 0 12px 0;">Estilos de Combate</div>' +
+                    '<div style="display: flex; flex-direction: column; gap: 6px;">' + estilosHTML + '</div>' +
+                  '</div>' +
+                '</div>' +
+
+                '<div style="font-size: 11px; font-weight: 700; color: #e86830; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px dashed #222; padding-bottom: 6px; margin: 15px 0 12px 0;">Maestrias e Talentos</div>' +
+                '<div style="display: flex; flex-direction: column; gap: 10px;">' + talentosHTML + '</div>' +
+
+                '<div style="font-size: 11px; font-weight: 700; color: #e86830; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px dashed #222; padding-bottom: 6px; margin: 15px 0 12px 0;"><span style="color:#e86830;">●</span> Arsenal</div>' +
+                '<div style="display: flex; flex-direction: column; gap: 6px;">' + arsenalHTML + '</div>' +
+
+                '<div style="font-size: 11px; font-weight: 700; color: #e86830; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px dashed #222; padding-bottom: 6px; margin: 15px 0 12px 0;"><span style="color:#e86830;">●</span> Técnicas Utilizadas</div>' +
+                '<div style="display: flex; flex-direction: column; gap: 6px;">' + tecnicasHTML + '</div>' +
+
+                '<div style="font-size: 11px; font-weight: 700; color: #e86830; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 1px dashed #222; padding-bottom: 6px; margin: 15px 0 12px 0;">Trilhas de Poder</div>' +
+                '<div style="display: flex; flex-direction: column; gap: 10px;">' + trilhasHTML + '</div>' +
               '</div>' +
             '</details>' +
 
@@ -324,7 +942,6 @@
       alert('Código copiado com sucesso! Agora basta colar no fórum.');
     }
 
-    // Inicialização da página
     generateInlineHTML();
   </script>
 </body>
