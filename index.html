@@ -61,7 +61,7 @@
     }
     input:focus, textarea:focus { border-color: #e86830; }
     textarea { resize: vertical; min-height: 80px; }
-    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+    .btn-group { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
     .btn-action {
       background: linear-gradient(90deg, #e86830, #ff3e00);
       color: #fff; border: none; padding: 12px; border-radius: 6px;
@@ -73,6 +73,7 @@
       padding: 12px; border-radius: 6px; font-weight: 700;
       font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
     }
+    .btn-secondary:hover { background: #252525; color: #fff; }
     .preview-panel {
       flex: 1; background-color: #050505; padding: 40px;
       overflow-y: auto; display: flex; justify-content: center;
@@ -331,7 +332,7 @@
   </div>
 
   <script>
-    // --- CHAVES DO FIREBASE CONFIGURADAS ---
+    // Configuração do Firebase com suas chaves oficiais
     const firebaseConfig = {
       apiKey: "AIzaSyD0NtmjQopui9mf32dsq59QtmQYNjWkKig",
       authDomain: "templates-online.firebaseapp.com",
@@ -474,6 +475,28 @@
         el.remove();
         update();
       }
+    }
+
+    var textInput = document.getElementById('in-text');
+    if (textInput) {
+      textInput.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B')) {
+          e.preventDefault();
+          var start = this.selectionStart;
+          var end = this.selectionEnd;
+          var val = this.value;
+          var selected = val.substring(start, end);
+          var replacement = '<b>' + selected + '</b>';
+          this.value = val.substring(0, start) + replacement + val.substring(end);
+          if (selected.length > 0) {
+            this.selectionStart = start;
+            this.selectionEnd = start + replacement.length;
+          } else {
+            this.selectionStart = this.selectionEnd = start + 3;
+          }
+          update();
+        }
+      });
     }
 
     function saveToCloud() {
