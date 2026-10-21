@@ -397,7 +397,6 @@
       document.getElementById('importCodeInput').value = '';
     }
 
-    // Processa o HTML colar e extrai os valores para o formulário
     function processImportHTML() {
       var code = document.getElementById('importCodeInput').value;
       if (!code.trim()) return;
@@ -405,21 +404,18 @@
       var parser = new DOMParser();
       var doc = parser.parseFromString(code, 'text/html');
 
-      // Tenta ler Banner
       var bannerDiv = doc.querySelector('div[style*="background-image"]');
       if (bannerDiv) {
         var match = bannerDiv.style.backgroundImage.match(/url\(['"]?(.*?)['"]?\)/);
         if (match && match[1]) document.getElementById('in-banner').value = match[1];
       }
 
-      // Tenta ler Subtítulo e Nome
       var nameDiv = doc.querySelector('div[style*="Cinzel"]');
       if (nameDiv) document.getElementById('in-name').value = nameDiv.innerText.trim();
 
       var subDiv = doc.querySelector('div[style*="letter-spacing: 2px"]');
       if (subDiv) document.getElementById('in-sub').value = subDiv.innerText.trim();
 
-      // Tenta ler HP
       var hpSpan = doc.querySelectorAll('span');
       hpSpan.forEach(function(s) {
         if (s.innerText.includes('/')) {
@@ -581,68 +577,82 @@
       var periciasData = [];
       document.querySelectorAll('.pericia-editor-card').forEach(function(card) {
         var id = card.id.replace('pericia-card-', '');
-        periciasData.push({
-          nome: document.getElementById('in-pericia-nome-' + id).value,
-          desc: document.getElementById('in-pericia-desc-' + id).value
-        });
+        if(document.getElementById('in-pericia-nome-' + id)) {
+          periciasData.push({
+            nome: document.getElementById('in-pericia-nome-' + id).value,
+            desc: document.getElementById('in-pericia-desc-' + id).value
+          });
+        }
       });
 
       var oficiosData = [];
       document.querySelectorAll('.oficio-editor-card').forEach(function(card) {
         var id = card.id.replace('oficio-card-', '');
-        oficiosData.push({
-          nome: document.getElementById('in-oficio-nome-' + id).value,
-          desc: document.getElementById('in-oficio-desc-' + id).value
-        });
+        if(document.getElementById('in-oficio-nome-' + id)) {
+          oficiosData.push({
+            nome: document.getElementById('in-oficio-nome-' + id).value,
+            desc: document.getElementById('in-oficio-desc-' + id).value
+          });
+        }
       });
 
       var estilosData = [];
       document.querySelectorAll('.estilo-editor-card').forEach(function(card) {
         var id = card.id.replace('estilo-card-', '');
-        estilosData.push({
-          nome: document.getElementById('in-estilo-nome-' + id).value,
-          desc: document.getElementById('in-estilo-desc-' + id).value
-        });
+        if(document.getElementById('in-estilo-nome-' + id)) {
+          estilosData.push({
+            nome: document.getElementById('in-estilo-nome-' + id).value,
+            desc: document.getElementById('in-estilo-desc-' + id).value
+          });
+        }
       });
 
       var talentosData = [];
       document.querySelectorAll('.talento-editor-card').forEach(function(card) {
         var id = card.id.replace('talento-card-', '');
-        talentosData.push({
-          title: document.getElementById('in-talento-title-' + id).value,
-          nivel: document.getElementById('in-talento-nivel-' + id).value,
-          cat: document.getElementById('in-talento-cat-' + id).value,
-          desc: document.getElementById('in-talento-desc-' + id).value,
-          det: document.getElementById('in-talento-det-' + id).value
-        });
+        if(document.getElementById('in-talento-title-' + id)) {
+          talentosData.push({
+            title: document.getElementById('in-talento-title-' + id).value,
+            nivel: document.getElementById('in-talento-nivel-' + id).value,
+            cat: document.getElementById('in-talento-cat-' + id).value,
+            desc: document.getElementById('in-talento-desc-' + id).value,
+            det: document.getElementById('in-talento-det-' + id).value
+          });
+        }
       });
 
       var arsenalData = [];
       document.querySelectorAll('.arsenal-editor-card').forEach(function(card) {
         var id = card.id.replace('arsenal-card-', '');
-        arsenalData.push({
-          nome: document.getElementById('in-arsenal-nome-' + id).value,
-          efeito: document.getElementById('in-arsenal-efeito-' + id).value
-        });
+        if(document.getElementById('in-arsenal-nome-' + id)) {
+          arsenalData.push({
+            nome: document.getElementById('in-arsenal-nome-' + id).value,
+            efeito: document.getElementById('in-arsenal-efeito-' + id).value
+          });
+        }
       });
 
       var tecnicasData = [];
       document.querySelectorAll('.tecnica-editor-card').forEach(function(card) {
         var id = card.id.replace('tecnica-card-', '');
-        tecnicasData.push({
-          nome: document.getElementById('in-tecnica-nome-' + id).value,
-          desc: document.getElementById('in-tecnica-desc-' + id).value
-        });
+        if(document.getElementById('in-tecnica-nome-' + id)) {
+          tecnicasData.push({
+            nome: document.getElementById('in-tecnica-nome-' + id).value,
+            desc: document.getElementById('in-tecnica-desc-' + id).value
+          });
+        }
       });
 
       var trilhasData = [];
       document.querySelectorAll('.trilha-editor-card').forEach(function(card) {
         var id = card.id.replace('trilha-card-', '');
-        trilhasData.push({
-          title: document.getElementById('in-trilha-title-' + id).value,
-          status: document.getElementById('in-trilha-status-' + id).value,
-          desc: document.getElementById('in-trilha-desc-' + id).value
-        });
+        if(document.getElementById('in-trilha-title-' + id)) {
+          trilhasData.push({
+            title: document.getElementById('in-trilha-title-' + id).value,
+            status: document.getElementById('in-trilha-status-' + id).value,
+            desc: document.getElementById('in-trilha-desc-' + id).value
+          });
+        }
       });
 
       var data = {
@@ -728,37 +738,40 @@
           });
         }
 
-        if(data.pericias && Array.isArray(data.pericias)) {
+        // Só reconstrói as caixas se a alteração veio de fora (de outro dispositivo)
+        var activeEl = document.activeElement ? document.activeElement.id : '';
+
+        if(data.pericias && Array.isArray(data.pericias) && !activeEl.includes('pericia')) {
           document.getElementById('pericias-editor-list').innerHTML = '';
           periciasCount = 0;
           data.pericias.forEach(function(item) { addPericiaEditor(item.nome, item.desc); });
         }
-        if(data.oficios && Array.isArray(data.oficios)) {
+        if(data.oficios && Array.isArray(data.oficios) && !activeEl.includes('oficio')) {
           document.getElementById('oficios-editor-list').innerHTML = '';
           oficiosCount = 0;
           data.oficios.forEach(function(item) { addOficioEditor(item.nome, item.desc); });
         }
-        if(data.estilos && Array.isArray(data.estilos)) {
+        if(data.estilos && Array.isArray(data.estilos) && !activeEl.includes('estilo')) {
           document.getElementById('estilos-editor-list').innerHTML = '';
           estilosCount = 0;
           data.estilos.forEach(function(item) { addEstiloEditor(item.nome, item.desc); });
         }
-        if(data.talentos && Array.isArray(data.talentos)) {
+        if(data.talentos && Array.isArray(data.talentos) && !activeEl.includes('talento')) {
           document.getElementById('talentos-editor-list').innerHTML = '';
           talentosCount = 0;
           data.talentos.forEach(function(item) { addTalentoEditor(item.title, item.nivel, item.cat, item.desc, item.det); });
         }
-        if(data.arsenal && Array.isArray(data.arsenal)) {
+        if(data.arsenal && Array.isArray(data.arsenal) && !activeEl.includes('arsenal')) {
           document.getElementById('arsenal-editor-list').innerHTML = '';
           arsenalCount = 0;
           data.arsenal.forEach(function(item) { addArsenalEditor(item.nome, item.efeito); });
         }
-        if(data.tecnicas && Array.isArray(data.tecnicas)) {
+        if(data.tecnicas && Array.isArray(data.tecnicas) && !activeEl.includes('tecnica')) {
           document.getElementById('tecnicas-editor-list').innerHTML = '';
           tecnicasCount = 0;
           data.tecnicas.forEach(function(item) { addTecnicaEditor(item.nome, item.desc); });
         }
-        if(data.trilhas && Array.isArray(data.trilhas)) {
+        if(data.trilhas && Array.isArray(data.trilhas) && !activeEl.includes('trilha')) {
           document.getElementById('trilhas-editor-list').innerHTML = '';
           trilhasCount = 0;
           data.trilhas.forEach(function(item) { addTrilhaEditor(item.title, item.status, item.desc); });
@@ -837,82 +850,96 @@
       var periciasHTML = '';
       document.querySelectorAll('.pericia-editor-card').forEach(function(card) {
         var id = card.id.replace('pericia-card-', '');
-        var pNome = document.getElementById('in-pericia-nome-' + id).value;
-        var pDesc = document.getElementById('in-pericia-desc-' + id).value;
-        periciasHTML += '<div style="font-size: 12px; color: #ccc;"><span style="color: #e86830; font-weight: 700;">' + pNome + '</span> ' + pDesc + '</div>';
+        if(document.getElementById('in-pericia-nome-' + id)) {
+          var pNome = document.getElementById('in-pericia-nome-' + id).value;
+          var pDesc = document.getElementById('in-pericia-desc-' + id).value;
+          periciasHTML += '<div style="font-size: 12px; color: #ccc;"><span style="color: #e86830; font-weight: 700;">' + pNome + '</span> ' + pDesc + '</div>';
+        }
       });
 
       var oficiosHTML = '';
       document.querySelectorAll('.oficio-editor-card').forEach(function(card) {
         var id = card.id.replace('oficio-card-', '');
-        var oNome = document.getElementById('in-oficio-nome-' + id).value;
-        var oDesc = document.getElementById('in-oficio-desc-' + id).value;
-        oficiosHTML += '<div style="font-size: 12px; color: #ccc;"><span style="color: #e86830; font-weight: 700;">' + oNome + '</span> ' + oDesc + '</div>';
+        if(document.getElementById('in-oficio-nome-' + id)) {
+          var oNome = document.getElementById('in-oficio-nome-' + id).value;
+          var oDesc = document.getElementById('in-oficio-desc-' + id).value;
+          oficiosHTML += '<div style="font-size: 12px; color: #ccc;"><span style="color: #e86830; font-weight: 700;">' + oNome + '</span> ' + oDesc + '</div>';
+        }
       });
 
       var estilosHTML = '';
       document.querySelectorAll('.estilo-editor-card').forEach(function(card) {
         var id = card.id.replace('estilo-card-', '');
-        var eNome = document.getElementById('in-estilo-nome-' + id).value;
-        var eDesc = document.getElementById('in-estilo-desc-' + id).value;
-        estilosHTML += '<div style="font-size: 12px; color: #ccc;"><span style="color: #e86830; font-weight: 700;">' + eNome + '</span> ' + eDesc + '</div>';
+        if(document.getElementById('in-estilo-nome-' + id)) {
+          var eNome = document.getElementById('in-estilo-nome-' + id).value;
+          var eDesc = document.getElementById('in-estilo-desc-' + id).value;
+          estilosHTML += '<div style="font-size: 12px; color: #ccc;"><span style="color: #e86830; font-weight: 700;">' + eNome + '</span> ' + eDesc + '</div>';
+        }
       });
 
       var talentosHTML = '';
       document.querySelectorAll('.talento-editor-card').forEach(function(card) {
         var id = card.id.replace('talento-card-', '');
-        var tTitle = document.getElementById('in-talento-title-' + id).value;
-        var tNivel = document.getElementById('in-talento-nivel-' + id).value;
-        var tCat = document.getElementById('in-talento-cat-' + id).value;
-        var tDesc = document.getElementById('in-talento-desc-' + id).value;
-        var tDet = document.getElementById('in-talento-det-' + id).value;
+        if(document.getElementById('in-talento-title-' + id)) {
+          var tTitle = document.getElementById('in-talento-title-' + id).value;
+          var tNivel = document.getElementById('in-talento-nivel-' + id).value;
+          var tCat = document.getElementById('in-talento-cat-' + id).value;
+          var tDesc = document.getElementById('in-talento-desc-' + id).value;
+          var tDet = document.getElementById('in-talento-det-' + id).value;
 
-        talentosHTML += 
-          '<div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 12px 15px; display: flex; flex-direction: column; gap: 8px;">' +
-            '<div style="display: flex; justify-content: space-between; align-items: center;">' +
-              '<div style="font-size: 11px; text-transform: uppercase; color: #888; font-weight: 700; letter-spacing: 1px;">' + tTitle + '</div>' +
-              '<div style="background: rgba(232, 104, 48, 0.15); color: #e86830; border: 1px solid rgba(232, 104, 48, 0.3); font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 600;">NÍVEL: ' + tNivel + '</div>' +
-            '</div>' +
-            '<div style="height: 1px; background: #1a1a1a;"></div>' +
-            '<div style="font-size: 12px; color: #ccc; line-height: 1.5;"><strong style="color: #e86830;">' + tCat + '</strong><br>' + tDesc.replace(/\n/g, '<br>') + (tDet ? '<br><br><i>' + tDet.replace(/\n/g, '<br>') + '</i>' : '') + '</div>' +
-          '</div>';
+          talentosHTML += 
+            '<div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 12px 15px; display: flex; flex-direction: column; gap: 8px;">' +
+              '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+                '<div style="font-size: 11px; text-transform: uppercase; color: #888; font-weight: 700; letter-spacing: 1px;">' + tTitle + '</div>' +
+                '<div style="background: rgba(232, 104, 48, 0.15); color: #e86830; border: 1px solid rgba(232, 104, 48, 0.3); font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 600;">NÍVEL: ' + tNivel + '</div>' +
+              '</div>' +
+              '<div style="height: 1px; background: #1a1a1a;"></div>' +
+              '<div style="font-size: 12px; color: #ccc; line-height: 1.5;"><strong style="color: #e86830;">' + tCat + '</strong><br>' + tDesc.replace(/\n/g, '<br>') + (tDet ? '<br><br><i>' + tDet.replace(/\n/g, '<br>') + '</i>' : '') + '</div>' +
+            '</div>';
+        }
       });
 
       var arsenalHTML = '';
       document.querySelectorAll('.arsenal-editor-card').forEach(function(card) {
         var id = card.id.replace('arsenal-card-', '');
-        var aNome = document.getElementById('in-arsenal-nome-' + id).value;
-        var aEfeito = document.getElementById('in-arsenal-efeito-' + id).value;
-        arsenalHTML += '<div style="font-size: 12px; color: #ccc;">— <span style="color: #e86830; font-weight: 700;">' + aNome + '</span>: ' + aEfeito + '</div>';
+        if(document.getElementById('in-arsenal-nome-' + id)) {
+          var aNome = document.getElementById('in-arsenal-nome-' + id).value;
+          var aEfeito = document.getElementById('in-arsenal-efeito-' + id).value;
+          arsenalHTML += '<div style="font-size: 12px; color: #ccc;">— <span style="color: #e86830; font-weight: 700;">' + aNome + '</span>: ' + aEfeito + '</div>';
+        }
       });
 
       var tecnicasHTML = '';
       document.querySelectorAll('.tecnica-editor-card').forEach(function(card) {
         var id = card.id.replace('tecnica-card-', '');
-        var tecNome = document.getElementById('in-tecnica-nome-' + id).value;
-        var tecDesc = document.getElementById('in-tecnica-desc-' + id).value;
-        tecnicasHTML += '<div style="font-size: 12px; color: #ccc;">— <span style="color: #e86830; font-weight: 700;">' + tecNome + '</span>: ' + tecDesc + '</div>';
+        if(document.getElementById('in-tecnica-nome-' + id)) {
+          var tecNome = document.getElementById('in-tecnica-nome-' + id).value;
+          var tecDesc = document.getElementById('in-tecnica-desc-' + id).value;
+          tecnicasHTML += '<div style="font-size: 12px; color: #ccc;">— <span style="color: #e86830; font-weight: 700;">' + tecNome + '</span>: ' + tecDesc + '</div>';
+        }
       });
 
       var trilhasHTML = '';
       document.querySelectorAll('.trilha-editor-card').forEach(function(card) {
         var id = card.id.replace('trilha-card-', '');
-        var trTitle = document.getElementById('in-trilha-title-' + id).value;
-        var trStatus = document.getElementById('in-trilha-status-' + id).value;
-        var trDesc = document.getElementById('in-trilha-desc-' + id).value;
+        if(document.getElementById('in-trilha-title-' + id)) {
+          var trTitle = document.getElementById('in-trilha-title-' + id).value;
+          var trStatus = document.getElementById('in-trilha-status-' + id).value;
+          var trDesc = document.getElementById('in-trilha-desc-' + id).value;
 
-        trilhasHTML += 
-          '<div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 12px 15px; display: flex; flex-direction: column; gap: 8px;">' +
-            '<div style="display: flex; justify-content: space-between; align-items: center;">' +
-              '<div style="font-size: 11px; text-transform: uppercase; color: #888; font-weight: 700; letter-spacing: 1px;">' + trTitle + '</div>' +
-              '<div style="background: rgba(232, 104, 48, 0.15); color: #e86830; border: 1px solid rgba(232, 104, 48, 0.3); font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 600;">' + trStatus + '</div>' +
-            '</div>' +
-            '<div style="height: 1px; background: #1a1a1a;"></div>' +
-            '<div>' +
-              '<div style="font-size: 10px; text-transform: uppercase; color: #888; font-weight: 700; letter-spacing: 1px; margin-bottom: 2px;">ESCOLHAS E MECÂNICAS</div>' +
-              '<div style="font-size: 12px; color: #ccc; line-height: 1.5;">' + trDesc.replace(/\n/g, '<br>') + '</div>' +
-            '</div>' +
-          '</div>';
+          trilhasHTML += 
+            '<div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 12px 15px; display: flex; flex-direction: column; gap: 8px;">' +
+              '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+                '<div style="font-size: 11px; text-transform: uppercase; color: #888; font-weight: 700; letter-spacing: 1px;">' + trTitle + '</div>' +
+                '<div style="background: rgba(232, 104, 48, 0.15); color: #e86830; border: 1px solid rgba(232, 104, 48, 0.3); font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 600;">' + trStatus + '</div>' +
+              '</div>' +
+              '<div style="height: 1px; background: #1a1a1a;"></div>' +
+              '<div>' +
+                '<div style="font-size: 10px; text-transform: uppercase; color: #888; font-weight: 700; letter-spacing: 1px; margin-bottom: 2px;">ESCOLHAS E MECÂNICAS</div>' +
+                '<div style="font-size: 12px; color: #ccc; line-height: 1.5;">' + trDesc.replace(/\n/g, '<br>') + '</div>' +
+              '</div>' +
+            '</div>';
+        }
       });
 
       var fullHTML = 
